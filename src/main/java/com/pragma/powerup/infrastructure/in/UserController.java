@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,8 +47,14 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "No data found", content = @Content)
     })
 
+    @PreAuthorize("hasRole('OWNER')")
     @GetMapping("/")
     public ResponseEntity<List<UserResponse>> getAllUser() {
+        String email =
+                SecurityContextHolder.getContext()
+                        .getAuthentication()
+                        .getName();
+        System.out.println("CORREO USADO: "+email);
         return ResponseEntity.ok(userHandler.getAllUsers());
     }
 

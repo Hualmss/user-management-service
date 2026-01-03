@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,7 +26,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeController {
 
-    //private final UserHandler userHandler;
     private final EmployeeHandler employeeHandler;
 
     @Operation(summary = "Add a new employee")
@@ -34,9 +34,12 @@ public class EmployeeController {
             @ApiResponse(responseCode = "409", description = "employee already exists", content = @Content)
     })
     @PostMapping("/")
-    public ResponseEntity<Void> saveEmployee(@Valid @RequestBody UserRequest userRequest,
-                                         @RequestHeader(value = "X-Owner-ID") long propietarioId) {
-        employeeHandler.saveEmployee(userRequest, propietarioId);
+    public ResponseEntity<Void> saveEmployee(@Valid @RequestBody UserRequest userRequest) {
+        String userId =
+                SecurityContextHolder.getContext()
+                        .getAuthentication()
+                        .getName();
+        employeeHandler.saveEmployee(userRequest, Long.parseLong(userId));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -48,8 +51,12 @@ public class EmployeeController {
             @ApiResponse(responseCode = "404", description = "No data found", content = @Content)
     })
     @GetMapping("/")
-    public ResponseEntity<List<UserResponse>> getAllEmployees(@RequestHeader(value = "X-Owner-ID") long propietarioId) {
-        return ResponseEntity.ok(employeeHandler.getAllEmployees(propietarioId));
+    public ResponseEntity<List<UserResponse>> getAllEmployees() {
+        String userId =
+                SecurityContextHolder.getContext()
+                        .getAuthentication()
+                        .getName();
+        return ResponseEntity.ok(employeeHandler.getAllEmployees(Long.parseLong(userId)));
     }
 
 }

@@ -23,11 +23,16 @@ public class EmployeeCaseUse implements EmployeeServicePort {
 
     @Override
     public void saveEmployee(User user, long propietarioId) {
-        userPersistencePort.saveUser(user);
+        user.setRol(ROL_EMPLOYEE_IDENTIFIER);
+        User userSaved = userPersistencePort.saveUser(user);
+        employeePersistencePort.saveEmployeeOwnerRelation(
+                userSaved,
+                propietarioId
+        );
     }
 
     @Override
     public List<User> getAllEmployees(long propietarioId) {
-        return userPersistencePort.getAllUsers();
+        return employeePersistencePort.getAllUsersByOwnerId(propietarioId);
     }
 }

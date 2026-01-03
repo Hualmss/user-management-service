@@ -12,12 +12,16 @@ import javax.management.ValueExp;
 import java.util.Date;
 import java.util.Map;
 
-import static com.pragma.powerup.domain.util.constans.Constants.ROL_OWNER_IDENTIFIER;
+import static com.pragma.powerup.domain.util.constans.Constants.*;
 
 @Component
 public class JwtUtil {
     private final String SECRET_KEY = "mi-clave-super-secreta-para-jwt-256-bits-minimo";
-    private final Map<Long, String> map = Map.of(1L, "ADMIN", ROL_OWNER_IDENTIFIER, "OWNER", 3L, "EMPLOYEE");
+    private final Map<Long, String> map = Map.of(
+            ROL_ADMIN_IDENTIFIER, "ADMIN",
+            ROL_OWNER_IDENTIFIER, "OWNER",
+            ROL_EMPLOYEE_IDENTIFIER, "EMPLOYEE",
+            ROL_CLIENT_IDENTIFIER, "CLIENT");
 
     public String generateToken(Long userId, String role, String email) {
         return Jwts.builder()
