@@ -1,6 +1,6 @@
 package com.pragma.powerup.application.dto;
 
-import com.pragma.powerup.application.Validations.MayorDeEdad;
+import com.pragma.powerup.application.validation.MayorDeEdad;
 import lombok.Getter;
 import lombok.Setter;
 

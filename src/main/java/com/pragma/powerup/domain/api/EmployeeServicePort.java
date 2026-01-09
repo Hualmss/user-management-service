@@ -9,4 +9,5 @@ import java.util.List;
 public interface EmployeeServicePort {
     void saveEmployee(User user, long propietarioId);
     List<User> getAllEmployees(long propietarioId);
+    long getBossByEmployeeId(long employeeId);
 }

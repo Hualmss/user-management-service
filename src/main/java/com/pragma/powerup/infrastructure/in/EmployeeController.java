@@ -59,4 +59,15 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeHandler.getAllEmployees(Long.parseLong(userId)));
     }
 
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    @GetMapping("/getBoss")
+    public ResponseEntity<Long> getBossByEmployeeId(){
+        String userId =
+                SecurityContextHolder.getContext()
+                        .getAuthentication()
+                        .getName();
+        return ResponseEntity.ok(employeeHandler.getBossByEmployeeId(Long.parseLong(userId)));
+
+    }
+
 }

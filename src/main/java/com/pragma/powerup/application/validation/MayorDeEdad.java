@@ -1,4 +1,4 @@
-package com.pragma.powerup.application.Validations;
+package com.pragma.powerup.application.validation;
 
 
 import javax.validation.Constraint;

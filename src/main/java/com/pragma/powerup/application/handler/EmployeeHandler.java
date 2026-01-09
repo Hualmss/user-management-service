@@ -9,4 +9,5 @@ public interface EmployeeHandler {
 
     void saveEmployee(UserRequest user, long propietarioId);
     List<UserResponse> getAllEmployees(long propietarioId);
+    Long getBossByEmployeeId (long employeeId);
 }

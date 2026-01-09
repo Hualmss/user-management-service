@@ -31,7 +31,10 @@ public class EmployeeHandlerImpl implements EmployeeHandler {
                 .stream()
                 .map(userMapper::toUserResponse)
                 .collect(Collectors.toList());
+    }
 
-
+    @Override
+    public Long getBossByEmployeeId(long employeeId) {
+        return employeeServicePort.getBossByEmployeeId(employeeId);
     }
 }

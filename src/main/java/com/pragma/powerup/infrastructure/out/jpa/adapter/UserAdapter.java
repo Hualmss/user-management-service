@@ -22,7 +22,6 @@ public class UserAdapter implements UserPersistencePort {
 
     @Override
     public User saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return mapper.toUser(repository.save(mapper.toEntity(user)));
     }
 
@@ -41,6 +40,13 @@ public class UserAdapter implements UserPersistencePort {
                 .orElseThrow(NoDataFoundException::new);
 
 
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return repository.findByCorreo(email)
+                .map(mapper::toUser)
+                .orElseThrow(() -> new RuntimeException("Usuario no existe"));
     }
 
     @Override

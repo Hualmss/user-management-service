@@ -13,6 +13,5 @@ public class UserResponse {
     private String celular;
     private String fechaNacimiento;
     private String correo;
-
-
+    private String rol;
 }

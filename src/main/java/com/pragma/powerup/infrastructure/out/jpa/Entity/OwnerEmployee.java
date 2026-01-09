@@ -8,14 +8,15 @@ import javax.persistence.*;
 
 @Entity
 @Setter
-
-@Builder
 @Getter
 @Table(name = "jefe_empleado")
 public class OwnerEmployee {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long jefe_id;
-    private long empleado_id;
+    @Column(name = "jefe_id")
+    private long jefeId;
+    @Column(name = "empleado_id")
+    private long empleadoId;
 }

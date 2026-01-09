@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface UserEmployeeRepository extends CrudRepository<OwnerEmployee, Long> {
 
+    OwnerEmployee findByEmpleadoId(long employeeId);
     //List<OwnerEmployee> getAllEmployesByOwnerId();
 }

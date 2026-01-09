@@ -22,7 +22,7 @@ import java.util.List;
 
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/users")//añadir versionamiento
 @RequiredArgsConstructor
 public class UserController {
 
@@ -47,7 +47,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "No data found", content = @Content)
     })
 
-    @PreAuthorize("hasRole('OWNER')")
+
     @GetMapping("/")
     public ResponseEntity<List<UserResponse>> getAllUser() {
         String email =

@@ -1,14 +1,16 @@
 package com.pragma.powerup.infrastructure.configuration;
 
+import com.pragma.powerup.domain.api.AuthServicePort;
 import com.pragma.powerup.domain.api.ClientServicePort;
 import com.pragma.powerup.domain.api.EmployeeServicePort;
 import com.pragma.powerup.domain.api.UserServicePort;
-import com.pragma.powerup.domain.spi.ClientPersistencePort;
-import com.pragma.powerup.domain.spi.EmployeePersistencePort;
-import com.pragma.powerup.domain.spi.UserPersistencePort;
+import com.pragma.powerup.domain.spi.*;
+import com.pragma.powerup.domain.usecase.AuthCaseUse;
 import com.pragma.powerup.domain.usecase.ClientCaseUse;
 import com.pragma.powerup.domain.usecase.EmployeeCaseUse;
 import com.pragma.powerup.domain.usecase.UserUseCase;
+import com.pragma.powerup.infrastructure.genericUtil.CryptoUtilImpl;
+import com.pragma.powerup.infrastructure.jwt.JwtUtil;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.ClientAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.EmployeeAdapter;
 import com.pragma.powerup.infrastructure.out.jpa.adapter.UserAdapter;
@@ -29,6 +31,7 @@ public class BeanConfiguration {
     private final UserEmployeeRepository userEmployeeRepository;
 
 
+
     @Bean
     public UserPersistencePort userPersistencePort(){
         return new UserAdapter(repository, mapper, passwordEncoder);
@@ -36,7 +39,12 @@ public class BeanConfiguration {
 
     @Bean
     public UserServicePort userServicePort(){
-        return new UserUseCase(userPersistencePort());
+        return new UserUseCase(cryptoUtilPort(), userPersistencePort());
+    }
+
+    @Bean
+    public CryptoUtilPort cryptoUtilPort(){
+        return new CryptoUtilImpl(passwordEncoder);
     }
 
     @Bean
@@ -46,7 +54,7 @@ public class BeanConfiguration {
 
     @Bean
     public EmployeeServicePort employeeServicePort(){
-        return new EmployeeCaseUse(userPersistencePort() ,employeePersistencePort());
+        return new EmployeeCaseUse(userPersistencePort() ,employeePersistencePort(), cryptoUtilPort());
     }
 
     @Bean
@@ -56,7 +64,17 @@ public class BeanConfiguration {
 
     @Bean
     public ClientServicePort clientServicePort(){
-        return new ClientCaseUse(clientPersistencePort());
+        return new ClientCaseUse(clientPersistencePort(),cryptoUtilPort());
+    }
+
+    @Bean
+    public JwtPort jwtPort(){
+        return new JwtUtil();
+    }
+
+    @Bean
+    public AuthServicePort authServicePort(){
+        return new AuthCaseUse(userPersistencePort(), jwtPort(),cryptoUtilPort());
     }
 
 

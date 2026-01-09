@@ -16,7 +16,8 @@ public class ClientAdapter implements ClientPersistencePort {
 
     @Override
     public void saveClient(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         repository.save(mapper.toEntity(user));
     }
+
 }

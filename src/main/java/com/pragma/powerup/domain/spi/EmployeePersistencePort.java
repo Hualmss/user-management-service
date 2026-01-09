@@ -8,4 +8,5 @@ public interface EmployeePersistencePort {
 
     void saveEmployeeOwnerRelation (User user, long ownerId);
     List<User> getAllUsersByOwnerId(long propietarioId);
+    long getBossByEmployeeId(long employeeId);
 }

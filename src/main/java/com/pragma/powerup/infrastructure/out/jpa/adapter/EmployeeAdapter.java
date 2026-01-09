@@ -23,14 +23,11 @@ public class EmployeeAdapter implements EmployeePersistencePort {
 
     @Override
     public void saveEmployeeOwnerRelation(User user, long ownerId) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User employeeSaved = mapper.toUser(userRepository.save(mapper.toEntity(user)));
-        userEmployeeRepository.save(
-                OwnerEmployee.builder()
-                        .empleado_id(employeeSaved.getId())
-                        .jefe_id(ownerId)
-                        .build()
-        );
+        OwnerEmployee ownerEmployee = new OwnerEmployee();
+        ownerEmployee.setEmpleadoId(employeeSaved.getId());
+        ownerEmployee.setJefeId(ownerId);
+        userEmployeeRepository.save(ownerEmployee);
 
     }
 
@@ -41,4 +38,11 @@ public class EmployeeAdapter implements EmployeePersistencePort {
                 .map(mapper::toUser)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public long getBossByEmployeeId(long employeeId) {
+        return userEmployeeRepository.findByEmpleadoId(employeeId).getJefeId();
+    }
+
+
 }
